@@ -13,7 +13,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Getter
 @Setter
 @Entity			//자바 클래스를 DB의 테이블과 매핑하는 클래스-> 테이블명 : question 
@@ -39,6 +41,7 @@ public class Question {
 	private List<Answer> answerList;
 	
 	//question.getAnswerList();
+	
 	
 	
 	
