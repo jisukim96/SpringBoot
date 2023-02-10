@@ -7,6 +7,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.answer.AnswerRepository;
+import com.mysite.sbb.question.Question;
+import com.mysite.sbb.question.QuestionRepository;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -17,6 +23,97 @@ class SbbApplicationTests {
 	@Autowired		//객체 자동 주입(DI : Dependency Injection) , JPA의 메소드를 사용, findAll(), findById(),save(),delete()
 	private AnswerRepository answerRepository;
 	
+	/* Answer 테이블에 더미 데이터 입력 */
+	@Test
+	public void insertAnswer() {
+		Question q = new Question();
+		Answer a = new Answer();
+		
+		//Question 객체 질문에 대한 값을 가지고 와서 answer question 필드에 넣어준다.
+		Optional<Question> op =
+		this.questionRepository.findById(2);	//리턴타입 optional
+		q = op.get();
+		
+		
+		a.setContent("2 글에 대한 답변 입니다 - 3 ");
+		a.setCreateDate(LocalDateTime.now());
+		a.setQuestion(q);
+		
+		this.answerRepository.save(a);
+	}
+	
+	/* question 테이블에 for문을 사용해서 더미값 1000개 insert 
+	@Test
+	public void insert1000() {
+		Question q = null;
+		
+		//for문을 사용해서 레코드 1000개 insert
+		for ( int i = 1; i <= 1000; i++) {
+			q = new Question();
+			q.setSubject("제목 - "+ i);
+			q.setContent("내용 - "+ i);
+			q.setCreateDate(LocalDateTime.now());
+			
+			this.questionRepository.save(q); //question 테이블의 q 변수 선언해서 저장
+			
+		}
+	}
+	*/
+	
+	/* 하나의 질문에 여러개의 답변찾기 
+	@Transactional //아래의 메소드가 하나의 트랙잭션으로 작동되도록 설정 (JUnit Test에서만 사용)
+	@Test
+	public void testjpa8() {
+		//1. Question 테이블에서 질문의 레코드를 얻어온다. 끄집어 낸다.
+		Optional<Question> op =
+				this.questionRepository.findById(1);
+		Question q = null;
+		if(op.isPresent()) {
+			q = op.get();	//findById(1) -> 레코드(id,content,create_date,answerlist)
+		}
+		System.out.println(q.getId());
+		System.out.println(q.getSubject());
+		
+		
+		//2. 끄집어낸 객체의 q.getAnswerList(); <== 끄집어낸 객체의 답변글을 얻어온다.
+		//Question 객체의 answerList 컬럼은 List<answer>
+		List<Answer> all =
+				q.getAnswerList();
+		
+		//3.출력 구문에서 출력한다.
+		for(int i = 0; i < all.size();i++) {
+			Answer a = all.get(i);
+			System.out.println(a.getId());
+			System.out.println(a.getContent());
+			System.out.println(a.getCreateDate());
+			System.out.println("========================");
+			
+		}
+	}
+	
+	*/
+	
+	/* 답변 레코드 하나 가져오기 
+	@Transactional
+	@Test
+	public void testjpa7() {
+		Optional <Answer> op =
+		this.answerRepository.findById(1);
+		
+		if(op.isPresent()) { //isPresent() : null (false), null이 아닐 때 (true)
+			Answer a = op.get();			
+			System.out.println(a.getId());
+			System.out.println(a.getContent());
+			System.out.println(a.getCreateDate());
+			System.out.println("---------------");
+			System.out.println(a.getQuestion());
+			System.out.println("---------------");
+			
+		}
+	}
+	*/
+	
+	/* Answer 테이블에 Insert 처리
 	@Test
 	public void testAnswerjpa() {
 		// 1. Question(부모) 테이블의 답변을 처리할 레코드를 먼저 select 한다. findById(1)
@@ -35,6 +132,7 @@ class SbbApplicationTests {
 		// 3. save 메소드를 사용해서 저장
 		this.answerRepository.save(a);
 	}
+	*/
 	
 	/* 데이터 삭제 : JPA 메소드 : delete() 
 	@Test
