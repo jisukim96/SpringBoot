@@ -33,6 +33,10 @@ dependencies {
 
 	//Spring 에서 제공해주는 유효성 검사 라이브러리 : form에서 빈값이나 글자 수 제한
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	
+	//스프링 시큐리티와 관련 타임리프 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 }
 
 tasks.named('test') {

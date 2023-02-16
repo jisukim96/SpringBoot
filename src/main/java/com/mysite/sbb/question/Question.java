@@ -4,6 +4,7 @@ import java.time.LocalDateTime;		//자신의 시스템 로컬시간 설정
 import java.util.List;
 
 import com.mysite.sbb.answer.Answer;
+import com.mysite.sbb.user.SiteUser;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.Entity;	//JPA에서 적용된 어노테이션
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +46,9 @@ public class Question {
 	
 	//question.getAnswerList();
 	
+	@ManyToOne	//Forieng key : site_user 테이블의 Primary key 참조 
+	private SiteUser author; //여러개의 질문이 한 명의 사용자에게 작성될 수 있도록
 	
 	
-	
+	private LocalDateTime modifyDate; //수정일시
 }
