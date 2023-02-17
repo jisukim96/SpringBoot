@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang = "ko">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,8 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-
+<!-- sbb CSS -->
+<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 <title>템플릿 html (view 페이지 생성 기본적용)</title>
 </head>
 <body>
@@ -22,6 +23,8 @@
 	
 	<!-- 부트스트랩 자바 스크립트 import -->
 	<script th:src="@{/bootstrap.min.js}"></script>
-
+	<!-- 자바스크립트 Start -->
+	<th:block layout:fragment="script"></th:block>
+	<!-- 자바스크립트 End -->
 </body>
 </html>
