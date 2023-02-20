@@ -48,12 +48,19 @@ public class Question {
 	
 	//question.getAnswerList();
 	
+	//2월 16일 Entity 컬럼 추가, 글작성자
 	@ManyToOne	//Forieng key : site_user 테이블의 Primary key 참조 
 	private SiteUser author; //여러개의 질문이 한 명의 사용자에게 작성될 수 있도록
 	
 	
 	private LocalDateTime modifyDate; //수정일시
 	
-	@ManyToMany //질문과 추천인은 대등한 관계임으로
-	Set<SiteUser> voter;	//추천인은 중복이 안되기 때문에 중복으르 허용하지 않는 자료형 Set으로 설정
+	//추천인
+	@ManyToMany //질문과 추천인은 대등한 관계이고, 한명의 사용자가 여러 질문에 투표할 수 있다.
+	Set<SiteUser> voter;	//추천인은 중복이 안되기 때문에 중복을 허용하지 않는 자료형 Set으로 설정
+	
+	/*
+	 List : 방의 번호(Index)를 가지고 중복된 값을 저장할 수 있다.
+	 Set : 중복된 값을 넣을 수 없는 자료형
+	 			Set타입은 방번호를 가지지 않는다.*/
 }

@@ -31,7 +31,7 @@ public class AnswerService {
 		this.answerRepository.save(answer);
 		return answer;
 	}
-	
+	//2월 16일 수정(답변 조회, 답변 수정)
 	//기존 답변 작성자와 수정자가 다른 경우 예외발생
 	public Answer getAnswer(Integer id) {
 		Optional<Answer> answer = this.answerRepository.findById(id);
@@ -41,14 +41,19 @@ public class AnswerService {
 			throw new DataNotFoundException("answer not found");
 		}
 	}
-	//답변내용 수정, 수정일자로 날짜 수정
+	//답변(내용 ,수정일자) 수정
 	public void modify(Answer answer,String content) { 
 		answer.setContent(content);
 		answer.setModifyDate(LocalDateTime.now());
 		this.answerRepository.save(answer);
 	}
-	
+	//답변 삭제
 	public void delete(Answer answer) {
 		this.answerRepository.delete(answer);
+	}
+	//답변에 추천인 저장
+	public void vote(Answer answer,SiteUser siteUser){
+		answer.getVoter().add(siteUser);
+		this.answerRepository.save(answer);
 	}
 }

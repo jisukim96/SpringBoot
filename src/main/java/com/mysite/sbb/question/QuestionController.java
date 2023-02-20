@@ -67,10 +67,11 @@ public class QuestionController {
 		
 		return "question_list";
 	}
+	
 */	
 	// <<2월 14일 페이징 처리를 위해 수정됨>>
 	// http://localhost:9292/question/list/?page=0
-	@GetMapping("/question/list")
+/*	@GetMapping("/question/list")
 	public String listp(Model model,@RequestParam (value="page",defaultValue = "0") Integer page) {
 		
 		// 비즈니스 로직 처리 :  
@@ -81,7 +82,17 @@ public class QuestionController {
 		model.addAttribute("paging", paging);
 		
 		return "question_list";
-	}
+	}*/
+	
+	//검색어에 해당하는 kw파라미터 추가 , 
+	 @GetMapping("question/list")
+	    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+	            @RequestParam(value = "kw", defaultValue = "") String kw) {
+	        Page<Question> paging = this.questionService.getList(page, kw);
+	        model.addAttribute("paging", paging);
+	        model.addAttribute("kw", kw);
+	        return "question_list";
+	    }
 	
 	
 	// 상세페이지를 처리하는 메소드 : /question/detail/1
@@ -133,20 +144,22 @@ public class QuestionController {
 		questionForm.setContent(question.getContent());
 		return "question_form";
 	}
-	//질문 수정
+	
+	//2월 16일 : 질문 수정 postMapping 추가
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/question/modify/{id}")
 	public String questionmodify(@Valid QuestionForm questionForm, BindingResult bindingResult,Principal principal,@PathVariable("id") Integer id) {
 		if (bindingResult.hasErrors()) {
 			return "question_form";
 		}
-		Question question = this.questionService.getQuestion(id);
+		Question question = this.questionService.getQuestion(id); 
 		if(!question.getAuthor().getUsername().equals(principal.getName())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정권한이 없숩니다.");
 		}
 		this.questionService.modify(question, questionForm.getSubject(), questionForm.getContent());
 		return String.format("redirect:/question/detail/%s", id);
 	}
+	
 	//질문삭제
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("question/delete/{id}")
@@ -168,6 +181,7 @@ public class QuestionController {
 		this.questionService.vote(question, siteUser);
 		return String.format("redirect:/question/detail/%s", id);
 	}
+	
 }
 
 

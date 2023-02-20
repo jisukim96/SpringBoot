@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -62,5 +63,8 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	// JPA에서 페이지 번호를 0부터 시작
 	// 출력할 레코드 수를 JPA에 알려주면 내부에서 JPA가 전체 레코드(1000) / 10 = 100페이지가 나온다.
 	Page<Question> findAll(Pageable pageable);	//
+	
+	//Specification 과 Pageable 객체를 입력으로 Question 엔티티를 조회하는 메소드 선언
+	Page<Question> findAll(Specification<Question> spec, Pageable pageable);
 	
 }

@@ -50,10 +50,12 @@ public class AnswerController {
 			model.addAttribute("question", question);
 			return "question_detail";
 		}
-		
-		this.answerService.create(question, answerForm.getContent(),siteUser);
-		
-		return String.format("redirect:/question/detail/%s", id);
+		//2월 20일 답변을 등록후 해당 답변으로 이동하도록 앵커 기능 추가
+		Answer answer = this.answerService.create(question,
+						answerForm.getContent(), siteUser);
+						
+		return String.format("redirect:/question/detail/%s#answer_%s",
+				answer.getQuestion().getId(), answer.getId());	
 	}
 	//url의 답변 아이디를 통해 조회한 답변 내용을 가져오기위함
 	@PreAuthorize("isAuthenticated()")
@@ -66,7 +68,7 @@ public class AnswerController {
         answerForm.setContent(answer.getContent());		
 		return "answer_form";
 	}
-	//post방식의 url처리를 위함
+	//수정-post방식의 url처리를 위함
 	@PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult,
@@ -79,8 +81,10 @@ public class AnswerController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.answerService.modify(answer, answerForm.getContent());
-        return String.format("redirect:/question/detail/%s", answer.getQuestion().getId());
+        //2월 20일 답변을 수정후 해당 답변으로 이동하도록 앵커 기능 추가
+        return String.format("redirect:/question/detail/%s#answer_%s", answer.getQuestion().getId(), answer.getId());
     }
+	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{id}")
 	public String answerDelete(Principal principal,@PathVariable("id") Integer id) {
@@ -89,8 +93,17 @@ public class AnswerController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"삭제권한이 없습니다.");
 		}
 		this.answerService.delete(answer);
+		//2월 20일 답변을 삭제 후 해당 답변으로 이동하도록 앵커 기능 추가
+		return String.format("redirect:/question/detail/%s#answer_%s",answer.getQuestion().getId(),answer.getId());
+	}
+	//답변-추천버튼 호출되는 URL
+	@PreAuthorize("isAuthenticated()")	//로그인 한 사람만 추천가능
+	@GetMapping("/vote/{id}")
+	public String answerVote(Principal principal, @PathVariable("id") Integer id) {
+		Answer answer = this.answerService.getAnswer(id);
+		SiteUser siteUser = this.userService.getUser(principal.getName());
+		this.answerService.vote(answer, siteUser);		//vote메소드 호출하여 추천인 저장
 		return String.format("redirect:/question/detail/%s",answer.getQuestion().getId());
 	}
-	
 	
 }
