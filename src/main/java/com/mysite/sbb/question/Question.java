@@ -34,7 +34,8 @@ public class Question {
 	@Column(length = 200)	//값에 200자 까지 넣을 수 있다.
 	private String subject;
 	
-	@Column(columnDefinition = "TEXT")
+	//@Column(columnDefinition = "TEXT")
+	@Column(length=4000)
 	private String content;
 	
 	private LocalDateTime createDate;	//(카멜케이스 이름)->create_date : 실제 테이블 컬럼명

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.mysite'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.3-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
@@ -34,13 +34,21 @@ dependencies {
 	//Spring 에서 제공해주는 유효성 검사 라이브러리 : form에서 빈값이나 글자 수 제한
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	
-	//스프링 시큐리티와 관련 타임리프 라이브러리
+	//스프링 시큐리티와 관련 타임리프 라이브러리 (2월 15일)
+	//라이브러리를 설치하는 순간 프로젝트의 모든 내용 접근은 인증을 받아야 접근 가능하다.
 	implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 
 	//commonmark 라이브러리 : 스프링부트가 내부적으로 관리하는 라이브러리가 아니기 때문에  버전 정보가 필요하다.
 	//스프링부트가 관리하는 라이브러리는 버전정보를 명시하지 않으면 가장 궁합 좋은 버전을 자동 선택한다.
 	implementation 'org.commonmark:commonmark:0.21.0'
+	
+	//Oracle 라이브러리
+	//implementation 'com.oracle database.jdbc:ojdbc10'
+	implementation 'com.oracle.database.jdbc:ojdbc11'
+	
+	//JDBC
+	implementation	'org.springframework.boot:spring-boot-starter-jdbc'
 }
 
 tasks.named('test') {

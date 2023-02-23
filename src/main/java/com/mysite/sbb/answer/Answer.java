@@ -3,6 +3,8 @@ package com.mysite.sbb.answer;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import org.hibernate.Length;
+
 import com.mysite.sbb.question.Question;
 import com.mysite.sbb.user.SiteUser;
 
@@ -26,7 +28,8 @@ public class Answer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;				//Primary Key , 자동 증가(1,1)
 	
-	@Column(columnDefinition = "TEXT") 
+	//@Column(columnDefinition = "TEXT")
+	@Column(length=4000)
 	private String content;
 	
 	private LocalDateTime createDate;	//create_date(컬럼명)
