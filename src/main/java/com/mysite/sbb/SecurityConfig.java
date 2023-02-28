@@ -49,10 +49,11 @@ public class SecurityConfig {
         return http.build();
 	}
 	
-	@Bean
+	@Bean		//패스워드 해쉬코드로 변환하여 보안
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 	@Bean		//스프링 시큐리티 인증 담당
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
